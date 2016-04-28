@@ -486,71 +486,71 @@ if __name__ == "__main__":
     end = time.clock()
     print(round((end - start) / 60.0, 2), " min")
 
-    # # ********************************************************************************************************
-    # # ******************************** Step 3/ get a reference list of words *********************************
-    # # get a clean list of words used in all the Home Depot Dataframe
-    # print("Step 3/ get a reference list of words")
-    # start = time.clock()
-    # dicowordsHD = get_w_cnt(get_words_serie([df_query['query'], df_title['title'],
-    #                                             df_brand['brand'], df_descr['descr']]))
-    # listwordsHD = list(dicowordsHD.items())
-    # listwordsHD.sort(key=operator.itemgetter(1))
-    # listwordsHD.reverse()
-    # # costly operation to "deconcatenate" recursively words from top (occurences) to down in the dictionnary
-    # # ex: {garden: 7000, flower: 5000, gardenflower: 23} -> {garden: 7023, flower: 5023}
-    # # (gardenflower become a word to delete regarding to its initial occcurence vs its potential splits occurence)
-    # listwordsHDclean = parallel_split_word(listwordsHD)
-    # df_wordsHD = pd.DataFrame(listwordsHDclean, columns=['word', 'count_HD'])
-    # df_wordsHD.sort_values(by='count_HD', ascending=False, inplace=True)
-    #
-    # # get a list of words used in the query dataframe
-    # dicowordsquery = get_w_cnt(get_words_serie([df_query['query']]))
-    # df_wordsquery = pd.DataFrame(list(dicowordsquery.items()), columns=['word', 'count_query'])
-    # df_wordsquery.sort_values(by='count_query', ascending=False, inplace=True)
-    #
-    # # get a list of words used in the title dataframe
-    # dicowordstitle = get_w_cnt(get_words_serie([df_title['title']]))
-    # df_wordstitle = pd.DataFrame(list(dicowordstitle.items()), columns=['word', 'count_title'])
-    # df_wordstitle.sort_values(by='count_title', ascending=False, inplace=True)
-    #
-    # # get a list of words used in the brand dataframe
-    # dicowordsbrand = get_w_cnt(get_words_serie([df_brand['brand']]))
-    # df_wordsbrand = pd.DataFrame(list(dicowordsbrand.items()), columns=['word', 'count_brand'])
-    # df_wordsbrand.sort_values(by='count_brand', ascending=False, inplace=True)
-    #
-    # # get a list of words used in a big corpus of english text
-    # # that you can find at http://norvig.com/big.txt
-    # dicowordseng = get_w_cnt(get_words(open(p.featpth + "\\big.txt", 'r').read()))
-    # df_wordseng = pd.DataFrame(list(dicowordseng.items()), columns=['word', 'count_english'])
-    # df_wordseng.sort_values(by='count_english', ascending=False, inplace=True)
-    #
-    # # make the final dataframe of the reference list of word
-    # df_AllW = df_wordsHD.merge(df_wordseng, on='word', how='left')
-    # df_AllW = df_AllW.merge(df_wordsquery, on='word', how='left')
-    # df_AllW = df_AllW.merge(df_wordstitle, on='word', how='left')
-    # df_AllW = df_AllW.merge(df_wordsbrand, on='word', how='left')
-    #
-    # df_AllW['count_english'][df_AllW['count_english'].isnull()] = 0.0
-    # df_AllW['count_query'][df_AllW['count_query'].isnull()] = 0.0
-    # df_AllW['count_title'][df_AllW['count_title'].isnull()] = 0.0
-    # df_AllW['count_brand'][df_AllW['count_brand'].isnull()] = 0.0
-    #
-    # df_AllW = df_AllW[(df_AllW['count_HD'] >= 30) |
-    #                   (df_AllW['count_english'] >= 30) |
-    #                   (df_AllW['count_query'] >= 1) |
-    #                   (df_AllW['count_title'] >= 5) |
-    #                   (df_AllW['count_brand'] >= 1)]
-    # df_sw = pd.read_csv(p.featpth + '\\eng_stopwords.csv', sep=";", encoding="ISO-8859-1")
-    # stemmer = pstem.PorterStemmer()
-    # df_AllW['stem'] = df_AllW['word'].map(stemmer.stem)
-    # df_AllW['issw'] = df_AllW['word'].isin(df_sw['stopword'])
-    # df_AllW['weight'] = df_AllW['count_HD']**0.35 + df_AllW['count_english']**0.45 + df_AllW['count_query']**0.7 + \
-    #                     df_AllW['count_title']**0.6 + df_AllW['count_brand']**0.8
-    #
-    # df_AllW.to_csv(p.featpth + '\\Listwordscount.csv', sep=";", index=False)
-    #
-    # end = time.clock()
-    # print(round((end - start) / 60.0, 2), " min")
+    # ********************************************************************************************************
+    # ******************************** Step 3/ get a reference list of words *********************************
+    # get a clean list of words used in all the Home Depot Dataframe
+    print("Step 3/ get a reference list of words")
+    start = time.clock()
+    dicowordsHD = get_w_cnt(get_words_serie([df_query['query'], df_title['title'],
+                                                df_brand['brand'], df_descr['descr']]))
+    listwordsHD = list(dicowordsHD.items())
+    listwordsHD.sort(key=operator.itemgetter(1))
+    listwordsHD.reverse()
+    # costly operation to "deconcatenate" recursively words from top (occurences) to down in the dictionnary
+    # ex: {garden: 7000, flower: 5000, gardenflower: 23} -> {garden: 7023, flower: 5023}
+    # (gardenflower become a word to delete regarding to its initial occcurence vs its potential splits occurence)
+    listwordsHDclean = parallel_split_word(listwordsHD)
+    df_wordsHD = pd.DataFrame(listwordsHDclean, columns=['word', 'count_HD'])
+    df_wordsHD.sort_values(by='count_HD', ascending=False, inplace=True)
+    
+    # get a list of words used in the query dataframe
+    dicowordsquery = get_w_cnt(get_words_serie([df_query['query']]))
+    df_wordsquery = pd.DataFrame(list(dicowordsquery.items()), columns=['word', 'count_query'])
+    df_wordsquery.sort_values(by='count_query', ascending=False, inplace=True)
+    
+    # get a list of words used in the title dataframe
+    dicowordstitle = get_w_cnt(get_words_serie([df_title['title']]))
+    df_wordstitle = pd.DataFrame(list(dicowordstitle.items()), columns=['word', 'count_title'])
+    df_wordstitle.sort_values(by='count_title', ascending=False, inplace=True)
+    
+    # get a list of words used in the brand dataframe
+    dicowordsbrand = get_w_cnt(get_words_serie([df_brand['brand']]))
+    df_wordsbrand = pd.DataFrame(list(dicowordsbrand.items()), columns=['word', 'count_brand'])
+    df_wordsbrand.sort_values(by='count_brand', ascending=False, inplace=True)
+    
+    # get a list of words used in a big corpus of english text
+    # that you can find at http://norvig.com/big.txt
+    dicowordseng = get_w_cnt(get_words(open(p.featpth + "\\big.txt", 'r').read()))
+    df_wordseng = pd.DataFrame(list(dicowordseng.items()), columns=['word', 'count_english'])
+    df_wordseng.sort_values(by='count_english', ascending=False, inplace=True)
+    
+    # make the final dataframe of the reference list of word
+    df_AllW = df_wordsHD.merge(df_wordseng, on='word', how='left')
+    df_AllW = df_AllW.merge(df_wordsquery, on='word', how='left')
+    df_AllW = df_AllW.merge(df_wordstitle, on='word', how='left')
+    df_AllW = df_AllW.merge(df_wordsbrand, on='word', how='left')
+    
+    df_AllW['count_english'][df_AllW['count_english'].isnull()] = 0.0
+    df_AllW['count_query'][df_AllW['count_query'].isnull()] = 0.0
+    df_AllW['count_title'][df_AllW['count_title'].isnull()] = 0.0
+    df_AllW['count_brand'][df_AllW['count_brand'].isnull()] = 0.0
+    
+    df_AllW = df_AllW[(df_AllW['count_HD'] >= 30) |
+                      (df_AllW['count_english'] >= 30) |
+                      (df_AllW['count_query'] >= 1) |
+                      (df_AllW['count_title'] >= 5) |
+                      (df_AllW['count_brand'] >= 1)]
+    df_sw = pd.read_csv(p.featpth + '\\eng_stopwords.csv', sep=";", encoding="ISO-8859-1")
+    stemmer = pstem.PorterStemmer()
+    df_AllW['stem'] = df_AllW['word'].map(stemmer.stem)
+    df_AllW['issw'] = df_AllW['word'].isin(df_sw['stopword'])
+    df_AllW['weight'] = df_AllW['count_HD']**0.35 + df_AllW['count_english']**0.45 + df_AllW['count_query']**0.7 + \
+                        df_AllW['count_title']**0.6 + df_AllW['count_brand']**0.8
+    
+    df_AllW.to_csv(p.featpth + '\\Listwordscount.csv', sep=";", index=False)
+    
+    end = time.clock()
+    print(round((end - start) / 60.0, 2), " min")
 
     # ********************************************************************************************************
     # *********************************** Step 4/ process the dataframes *************************************
