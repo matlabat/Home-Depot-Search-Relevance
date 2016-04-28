@@ -1,0 +1,2 @@
+In this folder should be the input data from the competition that you can find here:
+https://www.kaggle.com/c/home-depot-product-search-relevance/data
